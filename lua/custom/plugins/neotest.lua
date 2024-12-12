@@ -6,6 +6,7 @@ return {
     'antoinemadec/FixCursorHold.nvim',
     'nvim-treesitter/nvim-treesitter',
     'rouge8/neotest-rust',
+    'nvim-neotest/neotest-go',
   },
   config = function()
     ---@diagnostic disable-next-line: missing-fields
@@ -13,6 +14,11 @@ return {
       adapters = {
         require 'neotest-rust' {
           args = { '--no-capture' },
+        },
+        require 'neotest-go' {
+          experimental = {
+            test_table = true,
+          },
         },
       },
     }
