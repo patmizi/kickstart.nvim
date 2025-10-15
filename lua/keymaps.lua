@@ -31,92 +31,6 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- limit line wrapping using remaps
-vim.keymap.set('n', '<C-Right>', function()
-  local line_num = vim.fn.line '.'
-  local col = vim.fn.col '.'
-  local line = vim.fn.getline '.'
-  local line_len = vim.fn.strlen(line)
-
-  if col >= line_len then
-    return
-  end
-
-  -- Save position and try the movement
-  local save_pos = vim.fn.getpos '.'
-  vim.cmd 'normal! w'
-
-  local new_line_num = vim.fn.line '.'
-  local new_col = vim.fn.col '.'
-
-  -- If we jumped to a different line, restore and move to end of current line
-  if new_line_num ~= line_num then
-    vim.fn.setpos('.', save_pos)
-    vim.cmd 'normal! $'
-  end
-end, { noremap = true, silent = true })
-
-vim.keymap.set('i', '<C-Right>', function()
-  local line_num = vim.fn.line '.'
-  local col = vim.fn.col '.'
-  local line = vim.fn.getline '.'
-  local line_len = vim.fn.strlen(line)
-
-  if col >= line_len then
-    return
-  end
-
-  local save_pos = vim.fn.getpos '.'
-  vim.cmd 'normal! <C-o>w'
-
-  local new_line_num = vim.fn.line '.'
-
-  if new_line_num ~= line_num then
-    vim.fn.setpos('.', save_pos)
-    vim.cmd 'normal! <C-o>$'
-  end
-  vim.cmd 'startinsert!'
-end, { noremap = true, silent = true })
-
-vim.keymap.set('n', '<C-Left>', function()
-  local line_num = vim.fn.line '.'
-  local col = vim.fn.col '.'
-
-  if col <= 1 then
-    return
-  end
-
-  local save_pos = vim.fn.getpos '.'
-  vim.cmd 'normal! b'
-
-  local new_line_num = vim.fn.line '.'
-
-  if new_line_num ~= line_num then
-    vim.fn.setpos('.', save_pos)
-    vim.cmd 'normal! 0'
-  end
-end, { noremap = true, silent = true })
-
-vim.keymap.set('i', '<C-Left>', function()
-  local line_num = vim.fn.line '.'
-  local col = vim.fn.col '.'
-
-  if col <= 1 then
-    return
-  end
-
-  local save_pos = vim.fn.getpos '.'
-  vim.cmd 'normal! <C-o>b'
-
-  local new_line_num = vim.fn.line '.'
-
-  if new_line_num ~= line_num then
-    vim.fn.setpos('.', save_pos)
-    vim.cmd 'normal! <C-o>0'
-  end
-  vim.cmd 'startinsert!'
-end, { noremap = true, silent = true })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -128,6 +42,29 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+-- Show diagnostic window when no other floating menu exists
+vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  pattern = '*',
+  callback = function()
+    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(winid).zindex then
+        return
+      end
+    end
+    vim.diagnostic.open_float {
+      scope = 'cursor',
+      focusable = false,
+      close_events = {
+        'CursorMoved',
+        'CursorMovedI',
+        'BufHidden',
+        'InsertCharPre',
+        'WinLeave',
+      },
+    }
   end,
 })
 
