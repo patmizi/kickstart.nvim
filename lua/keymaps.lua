@@ -31,6 +31,18 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Window navigation with Alt + Arrow keys
+vim.keymap.set('n', '<A-Left>', '<C-w>h', { noremap = true, silent = true, desc = 'Focus left window' })
+vim.keymap.set('n', '<A-Right>', '<C-w>l', { noremap = true, silent = true, desc = 'Focus right window' })
+vim.keymap.set('n', '<A-Up>', '<C-w>k', { noremap = true, silent = true, desc = 'Focus top window' })
+vim.keymap.set('n', '<A-Down>', '<C-w>j', { noremap = true, silent = true, desc = 'Focus bottom window' })
+
+-- Also enable in insert mode if you want
+vim.keymap.set('i', '<A-Left>', '<C-o><C-w>h', { noremap = true, silent = true, desc = 'Focus left window' })
+vim.keymap.set('i', '<A-Right>', '<C-o><C-w>l', { noremap = true, silent = true, desc = 'Focus right window' })
+vim.keymap.set('i', '<A-Up>', '<C-o><C-w>k', { noremap = true, silent = true, desc = 'Focus top window' })
+vim.keymap.set('i', '<A-Down>', '<C-o><C-w>j', { noremap = true, silent = true, desc = 'Focus bottom window' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 

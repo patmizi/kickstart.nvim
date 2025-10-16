@@ -5,7 +5,7 @@ return {
     tca.setup {}
     vim.keymap.set({ 'n', 'x' }, '<leader>ca', function()
       tca.code_action {}
-    end, '[C]ode [A]ction', { noremap = true, silent = true })
+    end, { noremap = true, silent = true })
   end,
   dependencies = {
     { 'nvim-lua/plenary.nvim' },
