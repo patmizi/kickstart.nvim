@@ -64,7 +64,7 @@ return {
         local buf_nums = cache[tab]
         if buf_nums then
           for _, k in pairs(buf_nums) do
-            vim.api.nvim_buf_set_option(k, 'buflisted', true)
+            vim.api.nvim_set_option_value('buflisted', true, { buf = k })
           end
         end
       end,
@@ -75,7 +75,7 @@ return {
         local buf_nums = utils.get_valid_buffers()
         cache[tab] = buf_nums
         for _, k in pairs(buf_nums) do
-          vim.api.nvim_buf_set_option(k, 'buflisted', false)
+          vim.api.nvim_buf_set_option_value('buflisted', false, { buf = k })
         end
         last_tab = tab
       end,
@@ -87,7 +87,7 @@ return {
     })
     autocmd('TabNewEntered', {
       callback = function()
-        vim.api.nvim_buf_set_option(0, 'buflisted', true)
+        vim.api.nvim_buf_set_option_value('buflisted', true, { buf = 0 })
       end,
     })
   end,

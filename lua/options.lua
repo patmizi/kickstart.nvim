@@ -65,4 +65,46 @@ vim.opt.scrolloff = 10
 -- Set term gui colours
 vim.opt.termguicolors = true
 
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPLugin = 1
+
+-- Custom Diagnostic Underline Colours -- NOTE: this doesn't seem to work well with Alacritty
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', {
+  underline = true,
+  sp = '#ff0000',
+  bg = '#3d1f1f', -- Dark red background
+})
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', {
+  underline = true,
+  sp = '#ffaa00',
+  bg = '#3d2f1f', -- Dark orange background
+})
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', {
+  underline = true,
+  sp = '#00ffff',
+  bg = '#1f2f3d', -- Dark blue background
+})
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', {
+  underline = true,
+  sp = '#00ff00',
+  bg = '#1f3d1f', -- Dark green background
+})
+
+-- Open neo-tree and focus it on opening neovim
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function(data)
+    local directory = vim.fn.isdirectory(data.file) == 1
+
+    if directory then
+      vim.cmd.bd(1)
+      require('neo-tree.command').execute {
+        action = 'focus',
+        source = 'filesystem',
+        position = 'left',
+      }
+    end
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
