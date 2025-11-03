@@ -12,7 +12,7 @@ return {
         stages = 'fade_in_slide_out',
         timeout = 3000,
         background_colour = '#000000',
-        position = 'bottom_right', -- Position notifications in bottom right
+        top_down = false,
       }
       -- Set notify as the default notification handler
       vim.notify = require 'notify'
@@ -33,6 +33,13 @@ return {
           long_message_to_split = true, -- long messages will be sent to a split
           inc_rename = false, -- enables an input dialog for inc-rename.nvim
           lsp_doc_border = false, -- add a border to hover docs and signature help
+        },
+        cmdline = {
+          enabled = true,
+        },
+        popupmenu = {
+          enabled = true,
+          backend = 'nui', -- Change from 'cmp' to 'nui'
         },
         -- Route messages to notify
         routes = {

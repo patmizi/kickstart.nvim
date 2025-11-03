@@ -189,7 +189,16 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        copilot = {
+          settings = {
+            telemetry = {
+              telemetryLEvel = 'off',
+            },
+          },
+        },
+
         clangd = {},
+
         gopls = {
           analyses = {
             unusedparams = true,
@@ -197,16 +206,46 @@ return {
           staticcheck = true,
           gofumpt = true,
         },
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
+
+        jsonls = {
+          settings = {
+            json = {
+              schemas = {
+                {
+                  description = 'LLVM compilation database',
+                  fileMatch = {
+                    'compile_commands.json',
+                  },
+                  url = 'https://json.schemastore.org/compile-commands.json',
+                },
+                {
+                  description = 'Config file for Command Task Runner',
+                  fileMatch = {
+                    'commands.json',
+                  },
+                  url = 'https://json.schemastore.org/commands.json',
+                },
+                {
+                  description = 'Json schema for properties json file for a GitHub Workflow template',
+                  fileMatch = {
+                    '.github/workflow-templates/**.properties.json',
+                  },
+                  url = 'https://json.schemastore.org/github-workflow-template-properties.json',
+                },
+              },
+            },
+          },
+        },
+
+        yamlls = {
+          settings = {
+            yaml = {
+              schemas = {
+                ['https://json.schemastore.org/github-workflow.json'] = '/.github/workflows/*',
+              },
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -218,7 +257,7 @@ return {
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
