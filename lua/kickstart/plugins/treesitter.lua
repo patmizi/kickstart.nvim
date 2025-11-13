@@ -1,9 +1,10 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    event = { 'BufReadPost', 'BufNewFile' },
     build = ':TSUpdate',
-    -- [[ Configure Treesitter ]] See `:help n-treesitter`
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     opts = {
       ensure_installed = {
         'bash',
@@ -21,6 +22,8 @@ return {
         'gomod',
         'gowork',
         'gosum',
+        'typescript',
+        'javascript',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

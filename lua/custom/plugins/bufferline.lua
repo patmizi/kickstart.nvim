@@ -1,5 +1,9 @@
 return {
   'akinsho/bufferline.nvim',
+  keys = {
+    { '<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
+    { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
+  },
   config = function()
     require('bufferline').setup {
       -- highlights = require('catppuccin.groups.integrations.bufferline').get(),
