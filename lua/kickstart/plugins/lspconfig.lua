@@ -198,7 +198,13 @@ return {
           },
         },
 
-        clangd = {},
+        clangd = {
+          init_options = {
+            fallbackFlags = {
+              '-I/usr/include/wine/windows/',
+            },
+          },
+        },
 
         gopls = {
           analyses = {
@@ -262,6 +268,8 @@ return {
             },
           },
         },
+
+        vtsls = {},
       }
 
       -- Ensure the servers and tools above are installed
